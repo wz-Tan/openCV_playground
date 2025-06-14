@@ -3,7 +3,7 @@ import cv2 as cv
 import numpy as np
 
 
-#Get path, iterate through folders, use haar cascade to get the faces, store coordinates into arrays and feed to the model
+#Get path, iterate through folders, use haar cascade to get the faces, store the face coords and folder label into arrays and feed to the model
 
 people=["Ben Afflek","Elton John","Jerry Seinfield","Madonna","Mindy Kaling"]
 dir=r'C:\Users\Wen Zhe\Desktop\Programming Files\OpenCV\Faces\train'
@@ -34,7 +34,7 @@ def create_train():
             img_array=cv.imread(img_path)
             gray=cv.cvtColor(img_array,cv.COLOR_BGR2GRAY)
             faces_rect=haar_cascade.detectMultiScale(gray,1.1,minNeighbors=4)
-            
+
             for (x,y,w,h) in faces_rect:
                 faces=gray[y:y+h,x:x+w]
                 face_resized = cv.resize(faces, (100, 100))
@@ -54,5 +54,8 @@ labels=np.array(labels)
 face_recogniser= cv.face.LBPHFaceRecognizer_create()
 face_recogniser.train(features,labels)
 
+#Give it a path to save and then we can use that model in other projects
+face_recogniser.save("trained_model.yml")
 np.save("features.npy",features)
 np.save("labels.npy",labels)
+print("Hello")
